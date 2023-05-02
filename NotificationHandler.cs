@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using Telegram.Bot;
 using Telegram.Bot.Types;
 
-namespace PogodaCityBot
+namespace WeatherCityBot
 {
     internal class NotificationHandler
     {
@@ -20,9 +20,8 @@ namespace PogodaCityBot
             this.messageHandler = messageHandler;
         }
 
-        public async void GetNotification()
+        public async void GetNotificationAsync()
         {
-
             while (true)
             {
                 await Task.Delay(60000);

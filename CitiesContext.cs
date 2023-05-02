@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace PogodaCityBot;
+namespace WeatherCityBot;
 
 public partial class CitiesContext : DbContext
 {

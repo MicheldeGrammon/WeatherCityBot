@@ -1,14 +1,14 @@
 ﻿using System.Text.Json;
 
 
-namespace PogodaCityBot
+namespace WeatherCityBot
 {
     internal class RequestWeather : IRequestWeather
     {
         private readonly HttpClient httpClient = new HttpClient();
         public string GetWeather(string id)
         {
-            var url = $"https://api.openweathermap.org/data/2.5/weather?id={id}&units=metric&appid=e2b73f95db062d5a0de631582da9b2f5&lang=ru";
+            var url = $"https://api.openweathermap.org/data/2.5/weather?id={id}&units=metric&appid=myId&lang=ru";
 
             string response;
 

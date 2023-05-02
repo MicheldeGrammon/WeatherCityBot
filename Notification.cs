@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace PogodaCityBot;
+namespace WeatherCityBot;
 
 public partial class Notification
 {

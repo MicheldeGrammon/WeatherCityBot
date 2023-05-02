@@ -1,9 +1,9 @@
-﻿using PogodaCityBot;
+﻿using WeatherCityBot;
 using Telegram.Bot;
 using Telegram.Bot.Polling;
 using Telegram.Bot.Types;
 
-namespace PogodaCityBot
+namespace WeatherCityBot
 {
     internal class Program
     {
@@ -29,7 +29,7 @@ namespace PogodaCityBot
                 receiverOptions,
                 cts.Token
             );
-            notificationHandler.GetNotification();
+            notificationHandler.GetNotificationAsync();
 
             Console.ReadLine();
         }

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 
-namespace PogodaCityBot;
+namespace WeatherCityBot;
 
 public partial class NotificationsDbContext : DbContext
 {

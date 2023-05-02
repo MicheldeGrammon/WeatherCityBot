@@ -1,4 +1,4 @@
-﻿namespace PogodaCityBot
+﻿namespace WeatherCityBot
 {
     public class WeatherDescription
     {

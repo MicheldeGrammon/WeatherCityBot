@@ -1,7 +1,7 @@
 ﻿using Telegram.Bot;
 using Telegram.Bot.Types;
 
-namespace PogodaCityBot
+namespace WeatherCityBot
 {
     internal class UpdateHandler : IUpdateHandler
     {

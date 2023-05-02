@@ -1,6 +1,6 @@
 ﻿using Telegram.Bot;
 
-namespace PogodaCityBot
+namespace WeatherCityBot
 {
     internal interface IErrorHandler
     {
