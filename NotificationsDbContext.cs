@@ -18,7 +18,7 @@ public partial class NotificationsDbContext : DbContext
     public virtual DbSet<Notification> Notifications { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        => optionsBuilder.UseSqlite("Data Source=C:\\Users\\Barsuk\\source\\repos\\Проба пера\\TelegramBot\\PogodaCityBot\\PogodaCityBot\\notificationsDB.db");
+        => optionsBuilder.UseSqlite("Data Source=C:notificationsDB.db");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
