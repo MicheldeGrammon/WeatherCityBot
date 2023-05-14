@@ -17,7 +17,7 @@ namespace WeatherCityBot
             var date = update.Message!.Date;
             var dateMessage = DateTime.Now - date;
 
-            if (dateMessage.Seconds < 2)
+            if (dateMessage.Seconds < 10)
             {
                 var message = update.Message;
                 var chatId = message.Chat.Id;

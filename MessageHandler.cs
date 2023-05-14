@@ -22,21 +22,22 @@ namespace WeatherCityBot
                 case "/start":
                     return GetStartMessage();
                 case "/list":
-                    return GetListCity();
+                    return GetListCityAsync().Result;
                 case "/help":
                     return GetHelpInfo();
                 case "/MyNotifications":
-                    return GetMyNotifications(chatId);
+                    return GetMyNotificationsAsync(chatId).Result;
                 case "/ClearNotifications":
-                    return ClearNotification(chatId);
+                    return ClearNotificationAsync(chatId).Result;
                 default:
-                    if (TryGetId(userMessage, out var id))
+                    var id = GetIdAsync(userMessage).Result;
+                    if (id != "Invalid ID")
                     {
                         return requestWeather.GetWeather(id);
                     }
-                    else if (TryGetId(userMessage.Split('-')[0], out id))
+                    else if (GetIdAsync(userMessage.Split('-')[0]).Result != "Invalid ID")
                     {
-                        return CreateNotification(chatId, userMessage);
+                        return CreateNotificationAsync(chatId, userMessage).Result;
                     }
                     return GetDefaultMessage(userMessage);
             }
@@ -46,17 +47,16 @@ namespace WeatherCityBot
 
         private string GetDefaultMessage(string userMessage) => $"Unknown name: \"{userMessage}\", check city name /list;";
 
-        private string GetListCity()
+        private async Task<string> GetListCityAsync()
         {
             var listCities = new StringBuilder();
             List<string> list;
             var count = 1;
-            using (CitiesContext db = new CitiesContext())
+            await using (CitiesContext db = new CitiesContext())
             {
                 list = db.CityIds.OrderBy(x => x.Name)
                                  .Select(x => x.Name)
                                  .ToList();
-
             }
 
             foreach (var item in list)
@@ -70,12 +70,12 @@ namespace WeatherCityBot
             return listCities.ToString();
         }
 
-        private bool TryGetId(string userMessage, out string id)
+        private async Task<string> GetIdAsync(string userMessage)
         {
-            id = "Invalid ID";
+            var id = "Invalid ID";
             userMessage = userMessage.ToUpper();
 
-            using (CitiesContext db = new CitiesContext())
+            await using (CitiesContext db = new CitiesContext())
             {
                 if (db.CityIds.Any(x => x.Name == userMessage))
                 {
@@ -85,7 +85,7 @@ namespace WeatherCityBot
                 }
             }
 
-            return id != "Invalid ID";
+            return id;
         }
 
         private string GetHelpInfo()
@@ -102,13 +102,12 @@ namespace WeatherCityBot
             return helpInfo.ToString();
         }
 
-        private string GetMyNotifications(string chatId)
+        private async Task<string> GetMyNotificationsAsync(string chatId)
         {
-            using (NotificationsDbContext db = new NotificationsDbContext())
+            await using (NotificationsDbContext db = new NotificationsDbContext())
             {
                 var notification = db.Notifications.Where(x => x.ChatId == chatId)
-                                                   .Select(x => x)
-                                                   .ToList();
+                                                   .Select(x => x);
 
                 if (notification.Count() > 0)
                 {
@@ -125,7 +124,7 @@ namespace WeatherCityBot
             }
         }
 
-        private string CreateNotification(string chatId, string userMessage)
+        private async Task<string> CreateNotificationAsync(string chatId, string userMessage)
         {
             var input = userMessage.Split('-');
 
@@ -147,7 +146,7 @@ namespace WeatherCityBot
                 return "wrong time";
             }
 
-            using (NotificationsDbContext db = new NotificationsDbContext())
+           await  using (NotificationsDbContext db = new NotificationsDbContext())
             {
                 var done = 1;
                 if (DateTime.Now.Hour <= hours && DateTime.Now.Minute < minutes)
@@ -162,13 +161,12 @@ namespace WeatherCityBot
             return "notification created";
         }
 
-        private string ClearNotification(string chatId)
+        private async Task<string> ClearNotificationAsync(string chatId)
         {
-            using (NotificationsDbContext db = new NotificationsDbContext())
+            await using (NotificationsDbContext db = new NotificationsDbContext())
             {
                 var notification = db.Notifications.Where(x => x.ChatId == chatId)
-                                                   .Select(x => x)
-                                                   .ToList();
+                                                   .Select(x => x);
 
                 foreach (var item in notification)
                 {

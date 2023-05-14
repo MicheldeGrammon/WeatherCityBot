@@ -25,7 +25,7 @@ namespace WeatherCityBot
             while (true)
             {
                 await Task.Delay(60000);
-                using (NotificationsDbContext db = new NotificationsDbContext())
+                await using (NotificationsDbContext db = new NotificationsDbContext())
                 {
                     var hours = int.Parse(DateTime.Now.Hour.ToString());
                     var minutes = int.Parse(DateTime.Now.Minute.ToString());
@@ -42,8 +42,7 @@ namespace WeatherCityBot
                     }
 
                     var list = db.Notifications.Where(x => x.Done == 0)
-                                               .Select(x => x)
-                                               .ToList();
+                                               .Select(x => x);
 
                     foreach (var item in list)
                     {
@@ -57,7 +56,6 @@ namespace WeatherCityBot
                     }
                 }
             }
-
         }
     }
 }
