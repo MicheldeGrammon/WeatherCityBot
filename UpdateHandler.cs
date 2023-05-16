@@ -14,10 +14,10 @@ namespace WeatherCityBot
 
         public async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken)
         {
-            var date = update.Message!.Date;
-            var dateMessage = DateTime.Now - date;
+            var date = update.Message!.Date.AddHours(5); //message time + time zone
+                        var dateMessage = DateTime.Now - date;
 
-            if (dateMessage.Seconds < 10)
+            if (dateMessage.Hours < 1)
             {
                 var message = update.Message;
                 var chatId = message.Chat.Id;
