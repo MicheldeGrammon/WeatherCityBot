@@ -6,17 +6,17 @@ namespace WeatherCityBot
     internal class RequestWeather : IRequestWeather
     {
         private readonly HttpClient httpClient = new HttpClient();
-        public string GetWeather(string id)
+        public async Task<string> GetWeatherAsync(string id)
         {
-            var url = $"https://api.openweathermap.org/data/2.5/weather?id={id}&units=metric&appid=myId&lang=ru";
+            var url = $"https://api.openweathermap.org/data/2.5/weather?id={id}&units=metric&appid=MyId&lang=ru";
 
             string response;
 
             using (HttpClient httpClient = new HttpClient())
             {
-                var responseMessage = httpClient.GetAsync(url).Result;
-                response = responseMessage.Content.ReadAsStringAsync().Result;
-            }
+                var responseMessage = await httpClient.GetAsync(url);
+                response = await responseMessage.Content.ReadAsStringAsync();
+            }           
 
             WeatherResponse weatherResponse = JsonSerializer.Deserialize<WeatherResponse>(response);
             string city = weatherResponse.name;

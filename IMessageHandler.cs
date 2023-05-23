@@ -2,6 +2,6 @@
 {
     internal interface IMessageHandler
     {
-        string GetAnswer(string userMessage, string chatId);
+        Task<string> GetAnswerAsync(string userMessage, string chatId);
     }
 }

@@ -2,6 +2,6 @@
 {
     internal interface IRequestWeather
     {
-        string GetWeather(string id);
+        Task<string> GetWeatherAsync(string id);
     }
 }

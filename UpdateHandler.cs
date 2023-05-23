@@ -25,7 +25,7 @@ namespace WeatherCityBot
 
                 if (message.Text == null) message.Text = "/start";
                 {
-                    await botClient.SendTextMessageAsync(message.Chat, messageHandler.GetAnswer(message.Text, chatId.ToString()));
+                    await botClient.SendTextMessageAsync(message.Chat, await messageHandler.GetAnswerAsync(message.Text, chatId.ToString()));
                 }
             }
         }

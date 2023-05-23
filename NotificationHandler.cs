@@ -20,12 +20,12 @@ namespace WeatherCityBot
             this.messageHandler = messageHandler;
         }
 
-        public async void GetNotificationAsync()
+        public async Task GetNotificationAsync()
         {
             while (true)
             {
                 await Task.Delay(60000);
-                await using (NotificationsDbContext db = new NotificationsDbContext())
+                using (NotificationsDbContext db = new NotificationsDbContext())
                 {
                     var hours = int.Parse(DateTime.Now.Hour.ToString());
                     var minutes = int.Parse(DateTime.Now.Minute.ToString());
@@ -38,22 +38,25 @@ namespace WeatherCityBot
                         {
                             item.Done = 0;
                         }
-                        db.SaveChanges();
+                        await db.SaveChangesAsync();
                     }
 
-                    var list = db.Notifications.Where(x => x.Done == 0)
-                                               .Select(x => x);
+                    var listNotifications = db.Notifications.Where(x => x.Done == 0)
+                                                            .Select(x => x);
 
-                    foreach (var item in list)
+                    if (listNotifications.Count()>0) 
                     {
-                        var inputTime = item.Time.Split(':');
-                        if (int.Parse(inputTime[0]) <= hours && int.Parse(inputTime[1]) < minutes)
+                        foreach (var notification in listNotifications)
                         {
-                            await botClient.SendTextMessageAsync(item.ChatId, messageHandler.GetAnswer(item.NameCity, item.ChatId));
-                            item.Done = 1;
+                                var inputTime = notification.Time.Split(':');
+                                if (int.Parse(inputTime[0]) <= hours && int.Parse(inputTime[1]) < minutes)
+                                {
+                                    await botClient.SendTextMessageAsync(notification.ChatId, await messageHandler.GetAnswerAsync(notification.NameCity, notification.ChatId));
+                                    notification.Done = 1;
+                                }
+                                await db.SaveChangesAsync();
                         }
-                        db.SaveChanges();
-                    }
+                    }                    
                 }
             }
         }
