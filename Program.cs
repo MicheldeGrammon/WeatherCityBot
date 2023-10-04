@@ -9,6 +9,7 @@ namespace WeatherCityBot
     {
         static void Main(string[] args)
         {
+            //test GitHub
             ITelegramBotClient bot = new TelegramBotClient("token");
             Console.WriteLine("Запущен бот " + bot.GetMeAsync().Result.FirstName);
 
